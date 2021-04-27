@@ -1,10 +1,26 @@
 const { getDatabase } = require('../config');
+const { hashPassword } = require('../helpers/passHelp');
 const { ObjectId } = require('mongodb');
 const userCollection = 'users';
 
 class User {
-  static register(newUser) {
-    return getDatabase().collection(userCollection).insertOne(newUser);
+  static register(payload) {
+    payload.password = hashPassword(payload.password);
+    if (payload.role == undefined) {
+      payload.role = 'Customer';
+    } else {
+      payload.role = 'Admin';
+    }
+
+    return getDatabase().collection(userCollection).insertOne(payload);
+  }
+
+  static login(payload) {
+    return getDatabase().collection(userCollection).findOne({ email: payload });
+  }
+
+  static getOneUser(id) {
+    return getDatabase().collection(userCollection).findOne({ _id: ObjectId(id) });
   }
 }
 

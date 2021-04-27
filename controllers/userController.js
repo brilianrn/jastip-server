@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const { comparePassword } = require('../helpers/passHelp');
+const { generateToken } = require('../helpers/jwt');
 
 class UserController {
   static register(req, res, next) {
@@ -8,16 +10,40 @@ class UserController {
       email: req.body.email,
       password: req.body.password,
       birth_date: req.body.birth_date,
-      wallet: req.body.wallet
+      wallet: req.body.wallet,
+      role: req.body.role
     };
 
     User.register(newUser)
-      .then(data => {
-        console.log(data);
-        res.status(201).json(data);
+      .then(({ ops }) => {
+        res.status(201).json({ message: `${ops[0].email} success to created` });
       })
       .catch(err => {
-        console.log(err)
+        next(err);
+      })
+  }
+
+  static login(req, res, next) {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.login(email)
+      .then(user => {
+        if (user) {
+          let cekPass = comparePassword(password, user.password);
+          let payload = { id: user._id, email: user.email, last_name: user.last_name };
+
+          if (cekPass) {
+            let access_token = generateToken(payload);
+            res.status(200).json({ access_token, name: user.first_name });
+          } else {
+            throw new Error({ name: 'loginError', message: 'Invalid email/password' });
+          }
+        } else {
+          throw new Error({ name: 'loginError', message: 'Invalid email/password' });
+        }
+      })
+      .catch(err => {
         next(err);
       })
   }

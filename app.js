@@ -4,6 +4,7 @@ const port = process.env.PORT || 3001;
 
 const cors = require('cors');
 const route = require('./routes');
+const errHandler = require('./middlerwares/errHandler');
 const { mongoDbConnect } = require('./config');
 
 mongoDbConnect((isConnected) => {
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(route);
+app.use(errHandler);
 
 app.listen(port, () => {
   console.log('Running on port:', port);
