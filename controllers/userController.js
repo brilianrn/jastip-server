@@ -47,6 +47,18 @@ class UserController {
         next(err);
       })
   }
+
+  static findOne(req, res, next) {
+    const email = req.currentUser.email;
+
+    User.login(email)
+      .then(data => {
+        res.status(200).json(data);
+      })
+      .catch(err => {
+        next(err);
+      })
+  }
 }
 
 module.exports = UserController;
