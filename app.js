@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
@@ -8,7 +10,7 @@ const errHandler = require('./middlerwares/errHandler');
 const { mongoDbConnect } = require('./config');
 
 mongoDbConnect((isConnected) => {
-  isConnected ? console.log('Databse connection success!') : console.log('Database connection error!');
+  isConnected ? console.log('Database connection success!') : console.log('Database connection error!');
 });
 
 app.use(cors());

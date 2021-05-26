@@ -22,6 +22,10 @@ class Product {
   static deleteProduct(id) {
     return getDatabase().collection(productCollection).remove({ _id: ObjectId(id) });
   }
+
+  static findByUserId(userId) {
+    return getDatabase().collection(productCollection).find({ UserId: ObjectId(userId) }).toArray();
+  }
 }
 
 module.exports = Product;
