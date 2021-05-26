@@ -1,6 +1,5 @@
 const { verifyToken } = require('../helpers/jwt');
 const User = require('../models/userModel');
-const Product = require('../models/productModel');
 
 function authentication(req, _, next) {
   try {
@@ -12,27 +11,11 @@ function authentication(req, _, next) {
         next();
       })
       .catch(_ => {
-        throw new Error({ name: 'User Unauthorize', code: 401 });
+        throw new Error({ name: 'User Unauthenticate', code: 401 });
       })
-  } catch (_) {
-    next({ name: 'User Unauthorize', code: 401 })
+  } catch (error) {
+    next({ name: 'User Unauthenticate', code: 401 })
   }
 }
 
-function authorization(req, _, next) {
-  const id = req.params.id;
-  Product.getOneProduct(id)
-    .then(data => {
-      if (data) {
-        if ('' + data.UserId === '' + req.currentUser.id) {
-          next();
-        } else {
-          next({ name: 'Product Unauthorize', code: 401 });
-        }
-      } else {
-        next({ name: 'Product Unauthorize', code: 401 });
-      }
-    })
-}
-
-module.exports = { authentication, authorization };
+module.exports = authentication;

@@ -81,6 +81,18 @@ class ProductController {
         next(err);
       })
   }
+
+  static showUserProducts(req, res, next) {
+    const userId = req.params.userId;
+
+    Product.findByUserId(userId)
+      .then(data => {
+        res.status(200).json(data);
+      })
+      .catch(err => {
+        next(err);
+      })
+  }
 }
 
 module.exports = ProductController;

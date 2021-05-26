@@ -35,7 +35,7 @@ class UserController {
 
           if (cekPass) {
             let access_token = generateToken(payload);
-            res.status(200).json({ access_token, name: user.first_name });
+            res.status(200).json({ access_token, userId: user._id, name: user.first_name });
           } else {
             throw new Error({ name: 'loginError', message: 'Invalid email/password' });
           }
@@ -49,9 +49,9 @@ class UserController {
   }
 
   static findOne(req, res, next) {
-    const email = req.currentUser.email;
+    const id = req.params.userId;
 
-    User.login(email)
+    User.getOneUser(id)
       .then(data => {
         res.status(200).json(data);
       })
