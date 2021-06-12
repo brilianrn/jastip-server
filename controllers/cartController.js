@@ -35,6 +35,29 @@ class CartController {
         next(err);
       })
   }
+
+  static updateQty(req, res, next) {
+    let cartId = "" + req.params.cartId;
+    let dataUpdate = {
+      title: req.body.title,
+      size: req.body.size,
+      qty: +req.body.qty,
+      priceAftDisc: +req.body.priceAftDisc,
+      images: req.body.images,
+      discExp: req.body.discExp,
+      UserId: req.body.UserId,
+      ProductId: req.body.ProductId,
+    };
+    let sendData = { dataUpdate, cartId };
+
+    Cart.updateCart(sendData)
+      .then(_ => {
+        res.status(200).json({ message: `${dataUpdate.title} success to updated!` });
+      })
+      .catch(err => {
+        next(err);
+      })
+  }
 }
 
 module.exports = CartController;

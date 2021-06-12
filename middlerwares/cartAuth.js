@@ -14,4 +14,20 @@ function authorGetUserCarts(req, _, next) {
     })
 }
 
-module.exports = { authorGetUserCarts };
+function authorUpdateCart(req, _, next) {
+  let cartId = req.params.cartId
+  Cart.findOne(cartId)
+    .then(data => {
+      // if (data && "" + data[0].UserId === "" + req.currentUser.id) {
+      if (data) {
+        next();
+      } else {
+        next({ name: 'Unauthorize for Update Cart', code: 401 });
+      }
+    })
+    .catch(err => {
+      next(err);
+    })
+}
+
+module.exports = { authorGetUserCarts, authorUpdateCart };
