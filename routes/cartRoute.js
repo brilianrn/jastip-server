@@ -5,8 +5,9 @@ const { authorGetUserCarts, authorUpdateCart } = require('../middlerwares/cartAu
 
 router.use(authentication);
 router.post('/', CartController.createCart);
+router.get('/cart-check/:productId', CartController.getOneByProductId);
 
 router.get('/:userId', authorGetUserCarts, CartController.getCarts);
-router.put('/update-qty/:cartId', authorUpdateCart, CartController.updateQty);
+router.put('/update-qty/:cartId', authorUpdateCart, CartController.updateQty);;
 
 module.exports = router;
