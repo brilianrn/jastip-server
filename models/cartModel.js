@@ -28,11 +28,14 @@ class Cart {
     //     qty: dataUpdate.qty,
     //     images: dataUpdate.images,
     //     discExp: dataUpdate.discExp,
-    //     UserId: dataUpdate.UserId,
-    //     ProductId: dataUpdate.ProductId
+    //     UserId: ObjectId(dataUpdate.UserId),
+    //     ProductId: ObjectId(dataUpdate.ProductId)
     //   }
     // })
+  }
 
+  static findOneByProductId(productId) {
+    return getDatabase().collection(cartCollection).find({ ProductId: ObjectId(productId) }).toArray();
   }
 }
 

@@ -1,4 +1,5 @@
 const Cart = require('../models/cartModel');
+const { ObjectId } = require('mongodb');
 
 class CartController {
   static createCart(req, res, next) {
@@ -12,7 +13,7 @@ class CartController {
       images: req.body.images,
       discExp: req.body.discExp,
       UserId: req.currentUser.id,
-      ProductId: req.body._id
+      ProductId: ObjectId(req.body._id)
     };
 
     Cart.addCart(newCart)
@@ -25,7 +26,7 @@ class CartController {
   }
 
   static getCarts(req, res, next) {
-    let userId = req.params.userId;
+    let userId = "" + req.params.userId;
 
     Cart.findByUserId(userId)
       .then(data => {
@@ -45,14 +46,30 @@ class CartController {
       priceAftDisc: +req.body.priceAftDisc,
       images: req.body.images,
       discExp: req.body.discExp,
-      UserId: req.body.UserId,
-      ProductId: req.body.ProductId,
+      UserId: ObjectId(req.body.UserId),
+      ProductId: ObjectId(req.body.ProductId),
     };
     let sendData = { dataUpdate, cartId };
 
     Cart.updateCart(sendData)
       .then(_ => {
         res.status(200).json({ message: `${dataUpdate.title} success to updated!` });
+      })
+      .catch(err => {
+        next(err);
+      })
+  }
+
+  static getOneByProductId(req, res, next) {
+    let productId = "" + req.params.productId;
+
+    Cart.findOneByProductId(productId)
+      .then(data => {
+        if (data.length) {
+          res.status(200).json({ message: false, data });
+        } else {
+          res.status(200).json({ message: true });
+        }
       })
       .catch(err => {
         next(err);
