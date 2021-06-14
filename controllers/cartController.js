@@ -75,6 +75,22 @@ class CartController {
         next(err);
       })
   }
+
+  static deleteCart(req, res, next) {
+    let cartIds = req.body.cartIds;
+
+    cartIds.map(cartId => {
+      return (
+        Cart.deleteByCartId(cartId)
+          .then(_ => {
+            res.status(200).json({ message: 'Cart item success to delete!' });
+          })
+          .catch(err => {
+            next(err);
+          })
+      )
+    })
+  }
 }
 
 module.exports = CartController;

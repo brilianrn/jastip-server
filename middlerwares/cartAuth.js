@@ -29,4 +29,20 @@ function authorUpdateCart(req, _, next) {
     })
 }
 
-module.exports = { authorGetUserCarts, authorUpdateCart };
+function authorDeleteCart(req, _, next) {
+  let cartIds = req.body.cartIds;
+
+  cartIds.map(cartId =>
+    Cart.findOne(cartId)
+      .then(data => {
+        if ("" + data[0]._id === "" + cartId) {
+          next();
+        }
+      })
+      .catch(err => {
+        next({ name: 'Unauthorize for Delete Cart', code: 401 });
+      })
+  )
+}
+
+module.exports = { authorGetUserCarts, authorUpdateCart, authorDeleteCart };

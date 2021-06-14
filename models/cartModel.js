@@ -37,6 +37,10 @@ class Cart {
   static findOneByProductId(productId) {
     return getDatabase().collection(cartCollection).find({ ProductId: ObjectId(productId) }).toArray();
   }
+
+  static deleteByCartId(cartId) {
+    return getDatabase().collection(cartCollection).remove({ _id: ObjectId(cartId) });
+  }
 }
 
 module.exports = Cart;
