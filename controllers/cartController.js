@@ -77,7 +77,7 @@ class CartController {
   }
 
   static deleteCart(req, res, next) {
-    let cartIds = req.body.cartIds;
+    let cartIds = req.body;
 
     cartIds.map(cartId => {
       return (

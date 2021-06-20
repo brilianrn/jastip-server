@@ -30,7 +30,7 @@ function authorUpdateCart(req, _, next) {
 }
 
 function authorDeleteCart(req, _, next) {
-  let cartIds = req.body.cartIds;
+  let cartIds = req.body;
 
   cartIds.map(cartId =>
     Cart.findOne(cartId)
