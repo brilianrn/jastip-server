@@ -12,7 +12,7 @@ class Product {
   }
 
   static getOneProduct(id) {
-    return getDatabase().collection(productCollection).findOne({ _id: ObjectId(id) });
+    return getDatabase().collection(productCollection).find({ _id: ObjectId("" + id) }).toArray();
   }
 
   static updateProduct(id, product) {
