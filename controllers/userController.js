@@ -8,10 +8,12 @@ class UserController {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
+      phone_number: req.body.phoneNumber,
       password: req.body.password,
       birth_date: req.body.birth_date,
       wallet: req.body.wallet,
-      role: req.body.role
+      role: req.body.role,
+      myCarts: req.body.myCarts
     };
 
     User.register(newUser)

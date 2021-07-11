@@ -22,6 +22,10 @@ class User {
   static getOneUser(id) {
     return getDatabase().collection(userCollection).findOne({ _id: ObjectId(id) });
   }
+
+  static updateUser({ id, editUser }) {
+    return getDatabase().collection(userCollection).update({ _id: ObjectId(id) }, { $set: editUser });
+  }
 }
 
 module.exports = User;

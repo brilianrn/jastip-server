@@ -15,31 +15,20 @@ class Cart {
     return getDatabase().collection(cartCollection).find({ UserId: ObjectId(userId) }).toArray();
   }
 
-  static findOne(cartId) {
-    return getDatabase().collection(cartCollection).find({ _id: ObjectId(cartId) }).toArray();
+  static findOne({ cartId, UserId }) {
+    return getDatabase().collection(cartCollection).find({ _id: ObjectId(cartId), UserId: ObjectId(UserId) }).toArray();
   }
 
-  static updateCart({ cartId, dataUpdate }) {
-    return getDatabase().collection(cartCollection).update({ _id: ObjectId(cartId) }, { $set: dataUpdate });
-    // return getDatabase().collection(cartCollection).update({ _id: ObjectId(cartId) }, {
-    //   $set: {
-    //     title: dataUpdate.title,
-    //     size: dataUpdate.size,
-    //     qty: dataUpdate.qty,
-    //     images: dataUpdate.images,
-    //     discExp: dataUpdate.discExp,
-    //     UserId: ObjectId(dataUpdate.UserId),
-    //     ProductId: ObjectId(dataUpdate.ProductId)
-    //   }
-    // })
+  static updateCart({ cartId, dataUpdate, UserId }) {
+    return getDatabase().collection(cartCollection).update({ _id: ObjectId(cartId), UserId: ObjectId(UserId) }, { $set: dataUpdate });
   }
 
-  static findOneByProductId(productId) {
-    return getDatabase().collection(cartCollection).find({ ProductId: ObjectId(productId) }).toArray();
+  static findOneByProductId({ productId, UserId }) {
+    return getDatabase().collection(cartCollection).find({ ProductId: ObjectId(productId), UserId: ObjectId(UserId) }).toArray();
   }
 
-  static deleteByCartId(cartId) {
-    return getDatabase().collection(cartCollection).remove({ _id: ObjectId(cartId) });
+  static deleteByCartId({ ProductId, UserId }) {
+    return getDatabase().collection(cartCollection).remove({ ProductId: ObjectId(ProductId), UserId: ObjectId(UserId) });
   }
 }
 

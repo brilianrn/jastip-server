@@ -15,31 +15,37 @@ function authorGetUserCarts(req, _, next) {
 }
 
 function authorUpdateCart(req, _, next) {
-  let cartId = req.params.cartId
-  Cart.findOne(cartId)
+  let cartId = req.params.cartId;
+
+  Cart.findOne({ cartId, UserId: req.currentUser.id })
     .then(data => {
-      if (data && "" + data[0].UserId === "" + req.currentUser.id) {
+      if (data.length && "" + data[0].UserId === "" + req.currentUser.id) {
         next();
       } else {
-        next({ name: 'Unauthorize for Update Cart', code: 401 });
+        throw new Error({ name: 'Unauthorize for Update Cart', code: 401 });
       }
     })
-    .catch(err => {
-      next(err);
+    .catch(_ => {
+      next({ name: 'Unauthorize for Update Cart', code: 401 });
     })
 }
 
 function authorDeleteCart(req, _, next) {
-  let cartIds = req.body;
+  let productIds = req.body;
 
-  cartIds.map(cartId =>
-    Cart.findOne(cartId)
+  productIds.map(productId =>
+    Cart.findOneByProductId({
+      productId: "" + productId,
+      UserId: "" + req.currentUser.id
+    })
       .then(data => {
-        if ("" + data[0]._id === "" + cartId) {
+        if (data.length && "" + data[0].ProductId === "" + productId) {
           next();
+        } else {
+          throw new Error({ name: 'Unauthorize for Delete Cart', code: 401 });
         }
       })
-      .catch(err => {
+      .catch(_ => {
         next({ name: 'Unauthorize for Delete Cart', code: 401 });
       })
   )

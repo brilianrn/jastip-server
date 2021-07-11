@@ -6,6 +6,7 @@ const { authorGetUserCarts, authorUpdateCart, authorDeleteCart } = require('../m
 router.use(authentication);
 router.post('/', CartController.createCart);
 router.get('/cart-check/:productId', CartController.getOneByProductId);
+router.get('/stock-check/:productId', CartController.stockCheck);
 
 router.get('/:userId', authorGetUserCarts, CartController.getCarts);
 router.put('/update-qty/:cartId', authorUpdateCart, CartController.updateQty);;

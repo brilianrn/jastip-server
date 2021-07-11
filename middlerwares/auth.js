@@ -7,7 +7,11 @@ function authentication(req, _, next) {
 
     User.getOneUser(id)
       .then(data => {
-        req.currentUser = { id: data._id, email: data.email };
+        req.currentUser = {
+          id: data._id,
+          email: data.email,
+          phoneNumber: data.phone_number
+        };
         next();
       })
       .catch(_ => {
