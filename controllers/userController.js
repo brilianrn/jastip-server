@@ -13,7 +13,8 @@ class UserController {
       birth_date: req.body.birth_date,
       wallet: req.body.wallet,
       role: req.body.role,
-      myCarts: req.body.myCarts
+      myCarts: req.body.myCarts,
+      myCheckouts: req.body.myCheckouts
     };
 
     User.register(newUser)
