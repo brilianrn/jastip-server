@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { baseUrl, originCity } = require('../api/rajaOngkirApi');
 const request = require('request');
+const Checkout = require('../models/checkoutModel');
 
 class OngkirCheckController {
   static getProvices(req, res, next) {
@@ -65,7 +66,22 @@ class OngkirCheckController {
   }
 
   static getOrders(req, res, next) {
-    console.log(req.body.data, + " =================")
+    let orders = req.body;
+    let result = [];
+
+    for (let i = 0; i < orders.length; i++) {
+      Checkout.findOneByProductId(orders[i])
+        .then(data => {
+          result.push(data[0]);
+
+          if (i === orders.length - 1) {
+            res.status(200).json({ data: result });
+          }
+        })
+        .catch(err => {
+          next(err);
+        })
+    }
   }
 }
 
